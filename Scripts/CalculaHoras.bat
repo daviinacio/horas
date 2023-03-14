@@ -66,11 +66,21 @@ if "%1"=="hoje" (
   call :day %2
 
 ) else if "%1"=="mes" (
-  if "%2"=="passado" call :month 1
-  if "%2"=="retrasado" call :month 2
-  if "%2"=="anterior" call :month %3 ^ 1
+  if "%2"=="passado" (
+    call :month 1, %3
+    EXIT /B 0
+    
+  ) else if "%2"=="retrasado" (
+    call :month 2, %3
+    EXIT /B 0
 
-  if "%2"=="" call :month
+  ) else if "%2"=="atual" (
+    call :month 0, %3
+    EXIT /B 0
+
+  )
+
+  call :month %2, %4
 
 ) else if "%1"=="ajuda" (
   call :help
@@ -142,6 +152,13 @@ EXIT /B 0
 
 
 :month
+  set "line_filter=%~2"
+  set /a filter_search_minutes = 0
+  if defined line_filter (
+    echo Searching for: "%line_filter%"
+    echo.
+  )
+  
   call :subtract_month %~1 ^ 0
 
   if errorlevel 1 (
@@ -154,18 +171,36 @@ EXIT /B 0
 
   if errorlevel 1 (
     echo As horas desse mês ainda não foram lançadas no DevOps
+    EXIT /B 0
   )
-EXIT /B 0
 
+  if defined line_filter (
+    if %filter_search_minutes% == 0 (
+      echo Nenhum registro encontrado durante a busca
+      EXIT /B 0
+    )
+  )
+
+  if defined line_filter (
+    call :format_hours_and_minutes filter_search_hours, filter_search_minutes, true
+  )
+
+  if defined line_filter (
+    call :print_single_line "Total de hora acumulada na busca: %filter_search_hours%h%filter_search_minutes%"
+  )
+  
+EXIT /B 0
 
 :help
   echo hoje ................ Horas de hoje
   echo ontem ............... Horas de ontem (ou sexta passada)
-  echo dia dd/MM/yyyy ...... Horas de um dia específico
+  echo dia {dd/MM/yyyy} .... Horas de um dia específico
   echo mes ................. Horas do mês atual
+  echo mes atual ........... Horas do mês atual
   echo mes passado ......... Horas do mês passado (mês atual -1)
   echo mes retrasado ....... Horas do mês retrasado (mês atual -2)
-  echo mes anterior n ...... Horas de um mês anterior (mês atual -n)
+  echo mes {n} ............. Horas de um mês anterior (mês atual -n)
+  echo mes ? "termo busca" . Total horas busca. ?: (atual | passado | retrasado | {n})
   echo.
   echo ajuda/help........... Ajuda
 EXIT /B 0
@@ -317,6 +352,7 @@ EXIT /B 0
   )
 
   @REM Check if the current month have values
+  if defined line_filter EXIT /B 0
   if %month_registered_minutes%==0 EXIT /B 1
 
   @REM Calculate the results
@@ -390,6 +426,12 @@ EXIT /B 0
     @REM All days are working days
     set /a month_working_days += 1
   )
+
+  @REM Filtered results
+  if defined line_filter (
+    if %registered_minutes% == 0 EXIT /B 0
+    set /a filter_search_minutes += %registered_minutes%
+  )
   
   @REM Format results
   call :format_hours_and_minutes registered_hours, registered_minutes
@@ -406,6 +448,20 @@ EXIT /B 0
 
 :calculate_file_line
   set "line=%~1"
+
+  if defined line_filter (
+    if "%line:~5%" == " - %line_filter%" (
+      echo found 30 > NUL
+    ) else if "%line:~5%" == " - @%line_filter%" (
+      echo found 30 > NUL
+    ) else if "%line:~7%" == " - %line_filter%" (
+      echo found 15 > NUL
+    ) else if "%line:~7%" == " - @%line_filter%" (
+      echo found 15 > NUL
+    ) else (
+      EXIT /B 0
+    )
+  )
 
   @REM File properties
   if "%line:~0,6%" == "- [x] " (
@@ -448,7 +504,6 @@ EXIT /B 0
 
   @REM 30 minutes
   if "%line:~2,1%" == ":" (
-    if "%line:~8,6%" == "Almoço" EXIT /B 0
     if "%line:~8,3%" == "OFF" EXIT /B 0
     if "%line:~8,1%" == "" EXIT /B 0
 
@@ -467,7 +522,6 @@ EXIT /B 0
 
   @REM 15 minutes
   if "%line:~4,1%" == ":" (
-    if "%line:~10,6%" == "Almoço" EXIT /B 0
     if "%line:~10,3%" == "OFF" EXIT /B 0
     if "%line:~10,1%" == "" EXIT /B 0
 
