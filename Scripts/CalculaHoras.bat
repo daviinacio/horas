@@ -306,6 +306,7 @@ EXIT /B 0
   set /a month_required_minutes = 0
   set /a month_registered_minutes = 0
   set /a month_balance_minutes = 0
+  set /a month_working_days = 0
 
   @REM Iterate all files from a month folder
   for %%f in (%folder_path%\*) do (
@@ -355,6 +356,9 @@ EXIT /B 0
     call :calculate_file_line "%%x" > NUL
   )
 
+  set /a display_partial_registered_minutes = %partial_registered_minutes%
+  call :format_hours_and_minutes display_partial_registered_hours, display_partial_registered_minutes
+
   @REM FEATURE FLAG: Just consider registered days on total
   if "%feature_flag_registed_day_time%"=="true" (
     @REM Consider the worked time on day in total count if day flagged as registed
@@ -367,7 +371,7 @@ EXIT /B 0
         set /a month_registered_minutes += partial_registered_minutes
 
         if %partial_registered_minutes% gtr 0 (
-          set "file_props_text=%file_props_text% - [Parcialmente anotado]"
+          set "file_props_text=%file_props_text% - [@:%display_partial_registered_hours%h%display_partial_registered_minutes%]"
         )
       )
     )
@@ -434,7 +438,7 @@ EXIT /B 0
     ) else if "%line:~4,3%" == "D] " (
       echo  - Tarefa delegada: "%line:~7%"
 
-    ) else if "%line:~5,2%" == "] " (
+    ) else if "%line:~4,3%" == " ] " (
       set /a day_tasks_all_count += 1
       echo  - Tarefa pendente: "%line:~7%"
     ) 
