@@ -8,7 +8,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "tsc -w",
-    "link-cli": "yarn --global unlink horas && yarn --global link"
+    "build": "tsc",
+    "unlink-cli": "yarn --global unlink horas",
+    "link-cli": "yarn unlink-cli && yarn --global link"
   },
   "bin": {
     "horas": "./bin/main.js"
