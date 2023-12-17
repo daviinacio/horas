@@ -1,0 +1,20 @@
+{
+  "name": "task-time-manager",
+  "version": "0.6.0",
+  "description": "A simple CLI app to manage local daily tasks notation files.",
+  "main": "src/main.ts",
+  "repository": "https://github.com/daviinacio/task-time-manager",
+  "author": "Davi Inácio <aazz6850@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "tsc -w",
+    "link-cli": "yarn --global unlink horas && yarn --global link"
+  },
+  "bin": {
+    "horas": "./bin/main.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "typescript": "^5.3.3"
+  }
+}

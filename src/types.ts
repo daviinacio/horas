@@ -1,0 +1,3 @@
+type TestProp = {
+  name: string;
+}
