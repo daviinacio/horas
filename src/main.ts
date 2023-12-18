@@ -2,11 +2,10 @@
 import { Command } from "commander";
 import { config } from "./config";
 
+/** Default configuration */
+config.setDefault('timesheet_folder', '$/Documents/Horas');
+
 /** Setup */
-
-console.log(config.get('timesheet_folder'));
-
-config.set('timesheet_folder', 'value');
 
 const program = new Command();
 program
@@ -20,7 +19,8 @@ program
 program.command('criar')
   .description('Comando para criação de arquivo de horas')
   .action(() => {
-    console.log('criar arquivo')
+    console.log(config.get('timesheet_folder'));
+
   });
 
 program.parse(process.argv);

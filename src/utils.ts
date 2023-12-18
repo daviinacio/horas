@@ -1,4 +1,4 @@
-function getSharedUserDataFolder(){
+function getSharedUserDataFolder(): string{
   return process.env.APPDATA || (
     process.platform == 'darwin' ?
       process.env.HOME + '/Library/Preferences' :
@@ -6,6 +6,9 @@ function getSharedUserDataFolder(){
     );
 }
 
+function getUserHomeFolder(): string{
+  return process.env.HOME || process.env.USERPROFILE || '~/';
+}
 
 export const utils = {
   path: {
@@ -15,5 +18,8 @@ export const utils = {
     get user_data() {
       return getSharedUserDataFolder() + '/task-time-manager';
     },
+    get user_home() {
+      return getUserHomeFolder();
+    }
   }
 }
