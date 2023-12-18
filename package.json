@@ -10,7 +10,7 @@
     "dev": "tsc -w",
     "build": "tsc",
     "unlink-cli": "yarn --global unlink horas",
-    "link-cli": "yarn unlink-cli && yarn --global link"
+    "link-cli": "(yarn unlink-cli || true) && chmod +x bin/main.js && yarn --global link"
   },
   "bin": {
     "horas": "./bin/main.js"
@@ -18,5 +18,8 @@
   "devDependencies": {
     "@types/node": "^20.10.5",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "commander": "^11.1.0"
   }
 }
