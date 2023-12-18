@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { Command } from "commander";
 import { config } from "./config";
-import * as actions from './actions';
+import * as actions from "./actions";
 
 /** Default configuration */
 config.setDefault('locale', 'pt-BR');
@@ -14,20 +14,31 @@ config.setDefault('timesheet_file_dateformat', 'yyyy.MM.dd');
 config.setDefault('template_filename', 'DefaultTemplate.md');
 
 /** Setup */
-
 const program = new Command();
 program
   .name('task-time-manager')
   .description('A simple CLI app to manage local daily tasks notation files.')
   .version('0.6.0');
 
+program.hook('preAction', (thisCommand, actionCommand) => {
+  
+});
+
+program.hook('postAction', (thisCommand, actionCommand) => {
+  
+});
 
 /** Commands */
+actions.create.setup(program);
+actions.calculate.setup(program);
 
-program.command('criar')
-  .description('Comando para criação de arquivo de horas')
-  .action(() => {
-    actions.create.today();
-  });
+/** Runtime Execution */
+program.exitOverride();
 
-program.parse(process.argv);
+try {
+  program.parse(process.argv);
+} catch (err) {
+  if(err instanceof Error){
+    console.error(err.message);
+  }
+}

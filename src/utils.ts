@@ -45,6 +45,17 @@ function mkdirRecursive(file_path: string){
   fs.mkdirSync(file_path, { recursive: true });
 }
 
+function run(fn: Function){
+  try {
+    return fn();
+  }
+  catch(err){
+    if(err instanceof Error){
+      console.error(err.message);
+    }
+  }
+}
+
 export const utils = {
   path: {
     get user_shared_data() {
@@ -65,5 +76,6 @@ export const utils = {
     writeFile,
     exists: pathExists,
     mkdirRecursive
-  }
+  },
+  run
 }
