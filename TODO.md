@@ -31,3 +31,5 @@ horas calcular semana passada
 horas buscar "texto da busca"
 horas criar semana
 horas calcular mes passado --busca "texto da busca"
+horas criar hoje --continuar
+  Cria novo mantendo tarefas pendentes do dia anterior

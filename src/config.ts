@@ -1,5 +1,4 @@
 import { utils } from "./utils";
-import fs from 'fs';
 import type { ConfigEntries } from './types';
 
 const config_file_path = `${utils.path.user_data}/config.json`;
@@ -13,23 +12,23 @@ type ConfigType<Entries> = {
 }
 
 function ConfigLib<Entries>() : ConfigType<Entries> {
-  fs.mkdirSync(utils.path.user_data, { recursive: true });
+  utils.io.mkdirRecursive(utils.path.user_data);
 
-  const data = JSON.parse(readFile());
+  const data = JSON.parse(utils.io.readFile(config_file_path, '{}'));
   const defaultData = {} as any;
 
   function set(key: Entries, value: string): void {
     data[key] = value.replace('$', utils.path.user_home);
-    writeFile(JSON.stringify(data));
+    utils.io.writeFile(config_file_path, JSON.stringify(data));
   }
 
   function get(key: Entries): string {
-    return data[key] || defaultData[key];
+    return data[key] ?? defaultData[key];
   }
 
   function unset(key: Entries): void {
     delete data[key];
-    writeFile(JSON.stringify(data));
+    utils.io.writeFile(config_file_path, JSON.stringify(data));
   }
 
   function setDefault(key: Entries, value: string): void {
@@ -38,23 +37,6 @@ function ConfigLib<Entries>() : ConfigType<Entries> {
 
   function getDefault(key: Entries): string {
     return defaultData[key];
-  }
-
-  function readFile(): string{
-    try {
-      return fs.readFileSync(config_file_path, {
-        encoding: 'utf-8'
-      }) || '{}';
-    }
-    catch(err) {
-      return '{}'
-    }
-  }
-
-  function writeFile(textData: string){
-    fs.writeFileSync(config_file_path, textData, {
-      encoding: 'utf-8'
-    });
   }
 
   return {
