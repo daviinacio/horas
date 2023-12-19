@@ -2,11 +2,11 @@
 **criar**
 Automatiza a criação de time sheet a partir de um template.
 
-- [ ] Criar hoje
-- [ ] Criar em um dia específico
-- [ ] Criar amanhã
-- [ ] Criar segunda
-- [ ] Help
+- [x] Criar hoje
+- [x] Criar em um dia específico
+- [x] Criar amanhã
+- [x] Criar segunda
+- [x] Help
 
 **calcular**
 Calcula time sheets
@@ -33,3 +33,9 @@ horas criar semana
 horas calcular mes passado --busca "texto da busca"
 horas criar hoje --continuar
   Cria novo mantendo tarefas pendentes do dia anterior
+
+
+multi-lang
+  function 'txt(<key>)' que busca de um object baseado na key e no locale configurado
+
+  traduzir mensagens e comandos

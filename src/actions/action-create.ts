@@ -10,6 +10,7 @@ export function setup(program: Command){
     .description('Criar controle para hoje')
     .action(() => {
       const today = new Date();
+      console.log(today);
       createTimesheetByDate(today);
     });
 
@@ -33,13 +34,20 @@ export function setup(program: Command){
       createTimesheetByDate(nextMonday);
     });
 
-  // create.command('dia')
-  //   .description('Criar controle para um dia específico')
-  //   .action(() => {
-  //     const tomorrow = new Date();
-  //     tomorrow.setDate(tomorrow.getDate() + 1);
-  //     createTimesheetByDate(tomorrow);
-  //   });
+  create.command('dia')
+    .description('Criar controle para um dia específico')
+    .argument('<data>', 'formato MM/dd/yyyy ou yyyy-MM-dd')
+    .action((dateText) => {
+      const day = utils.format.dateTimezone(
+        new Date(`${dateText}`)
+      );
+
+      if(Number.isNaN(day.getTime())){
+        throw new Error('Data informada é inválida.');
+      }
+
+      createTimesheetByDate(day);
+    });
 }
 
 // export function today(){

@@ -20,6 +20,14 @@ function dateformat(date: Date, format?: string){
     .replace('dd', String(date.getDate()).padStart(2, '0'));
 }
 
+function dateTimezone(dateUTC: Date): Date{
+  return new Date(
+    dateUTC.getUTCFullYear(),
+    dateUTC.getUTCMonth(),
+    dateUTC.getUTCDate()
+  );
+}
+
 function readFile(file_path: string, notFound?: string): string {
   try {
     return fs.readFileSync(file_path, {
@@ -68,8 +76,9 @@ export const utils = {
       return getUserHomeFolder();
     }
   },
-  text: {
-    dateformat
+  format: {
+    dateformat,
+    dateTimezone
   },
   io: {
     readFile,

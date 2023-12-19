@@ -14,7 +14,7 @@ export function getTimesheetMonthPathByDate(date: Date){
 }
 
 export function getTimesheetFilenameByDate(date: Date){
-  const formattedDate = utils.text.dateformat(date, config.get('timesheet_file_dateformat'));
+  const formattedDate = utils.format.dateformat(date, config.get('timesheet_file_dateformat'));
   return config.get('timesheet_file_prefix') + formattedDate + '.md';
 }
 
@@ -33,7 +33,7 @@ export function createTimesheetByDate(date: Date){
 
   if(utils.io.exists(timesheet_filepath)) {
     throw new Error(`Controle de horas ja criado para ${
-      utils.text.dateformat(date)
+      utils.format.dateformat(date)
     }`);
   }
 
@@ -42,6 +42,6 @@ export function createTimesheetByDate(date: Date){
   utils.io.writeFile(timesheet_filepath, templateData);
 
   console.log(`Controle de horas criado com sucesso para o dia ${
-    utils.text.dateformat(date)
+    utils.format.dateformat(date)
   }`);
 }
