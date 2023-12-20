@@ -1,94 +1,39 @@
-import type { Command } from "commander";
-import { createTimesheetByDate } from "../lib/timesheet";
 import { utils } from "../utils";
+import { createTimesheetByDate } from "../lib/timesheet";
 
-export function setup(program: Command){
-  const create = program.command('criar')
-    .description('Comando para criação de arquivo de horas');
-
-  create.command('hoje')
-    .description('Criar controle para hoje')
-    .action(() => {
-      const today = new Date();
-      console.log(today);
-      createTimesheetByDate(today);
-    });
-
-  create.command('amanha')
-    .description('Criar controle para amanhã')
-    .action(() => {
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      createTimesheetByDate(tomorrow);
-    });
-
-  create.command('segunda')
-    .description('Criar controle para proxima segunda-feira')
-    .action(() => {
-      const today = new Date();
-      const nextMonday = new Date(
-        today.setDate(
-          today.getDate() + ((7 - today.getDay() + 1) % 7 || 7),
-        ),
-      )
-      createTimesheetByDate(nextMonday);
-    });
-
-  create.command('dia')
-    .description('Criar controle para um dia específico')
-    .argument('<data>', 'formato MM/dd/yyyy ou yyyy-MM-dd')
-    .action((dateText) => {
-      const day = utils.format.dateTimezone(
-        new Date(`${dateText}`)
-      );
-
-      if(Number.isNaN(day.getTime())){
-        throw new Error('Data informada é inválida.');
-      }
-
-      createTimesheetByDate(day);
-    });
+export function today(){
+  const today = new Date();
+  createTimesheetByDate(today);
 }
 
-// export function today(){
-//   const today = new Date();
+export function tomorrow(){
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  createTimesheetByDate(tomorrow);
+}
 
-//   try {
-//     createTimesheetByDate(today);
-//   }
-//   catch(err){
-//     if(err instanceof Error){
-//       console.error(err.message);
-//     }
-//   }
-// }
+export function monday(){
+  const today = new Date();
+  const nextMonday = new Date(
+    today.setDate(
+      today.getDate() + ((7 - today.getDay() + 1) % 7 || 7),
+    ),
+  )
+  createTimesheetByDate(nextMonday);
+}
 
-// export function day(){
-//   console.log('create day');
-// }
+export function day(dateText: string){
+  const day = utils.format.dateTimezone(
+    new Date(`${dateText}`)
+  );
 
-// export function tomorrow(){
-//   const tomorrow = new Date();
-//   tomorrow.setDate(tomorrow.getDate() + 1);
+  if(Number.isNaN(day.getTime())){
+    throw new Error('Data informada é inválida.');
+  }
 
-//   try {
-//     createTimesheetByDate(tomorrow);
-//   }
-//   catch(err){
-//     if(err instanceof Error){
-//       console.error(err.message);
-//     }
-//   }
-// }
+  createTimesheetByDate(day);
+}
 
-// export function monday(){
-//   console.log('create monday');
-// }
+function createByDate(date: Date){
 
-// export function week(){
-//   console.log('create monday');
-// }
-
-// export function month(){
-//   console.log('create monday');
-// }
+}

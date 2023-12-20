@@ -1,21 +1,32 @@
-import type { Command } from "commander";
+import { utils } from "../utils";
 
-export function setup(program: Command){
-
+export function today(){
+  console.log('calculate today');
 }
 
-// export function today(){
-//   console.log('calculate today');
-// }
+export function yesterday(){
+  console.log('calculate yesterday ');
+}
 
-// export function yesterday (){
-//   console.log('calculate yesterday ');
-// }
+export function day(dateText: string){
+  const day = utils.format.dateTimezone(
+    new Date(`${dateText}`)
+  );
 
-// export function day(){
-//   console.log('calculate day');
-// }
+  if(Number.isNaN(day.getTime())){
+    throw new Error('Data informada é inválida.');
+  }
 
-// export function month(){
-//   console.log('calculate month');
-// }
+  console.log('calculate day');
+}
+
+export function month(monthShift = 0){
+  const date = new Date();
+  date.setDate(1);
+  date.setMonth(date.getMonth() - (monthShift));
+
+  console.log('calculate month', monthShift, {
+    month: date.getMonth() + 1,
+    year: date.getFullYear()
+  });
+}
