@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { Command, CommanderError, createCommand } from "commander";
-import { config } from "./config";
-import * as actions from "./actions";
+import { config } from "./config.js";
+import * as actions from "./actions/index.js";
 
 /** Default configuration */
 config.setDefault('locale', 'pt-BR');
@@ -18,7 +18,7 @@ const program = new Command();
 program
   .name('task-time-manager')
   .description('A simple CLI app to manage local daily tasks notation files.')
-  .version('0.6.0');
+  .version('0.6.0 node');
 
 program.hook('preAction', (thisCommand, actionCommand) => {
   
@@ -29,8 +29,11 @@ program.hook('postAction', (thisCommand, actionCommand) => {
 });
 
 /** Commands */
+program.addHelpCommand('ajuda', 'Ajuda geral');
+
 const command_create = program.command('criar')
-    .description('Comando para criação de arquivo de horas');
+    .description('Comando para criação de arquivo de horas')
+    .addHelpCommand('ajuda', 'Ajuda nos comandos de criação');
 
 command_create.command('hoje')
   .description('Criar controle para hoje')
@@ -51,36 +54,48 @@ command_create.command('dia')
 
 
 const command_calculate = program.command('calcular')
-  .description('Comando de calculo de horas');
+  .description('Comando de calculo de horas')
+  .addHelpCommand('ajuda', 'Ajuda nos comandos de calculo');
 
 command_calculate.command('hoje')
   .description('Horas de hoje')
+  .argument('[busca]', 'texto da busca')
   .action(actions.calculate.today);
 
 command_calculate.command('ontem')
   .description('Horas de ontem')
+  .argument('[busca]', 'texto da busca')
   .action(actions.calculate.yesterday);
 
 command_calculate.command('dia')
   .description('Horas de um dia específico')
   .argument('<data>', 'formato MM/dd/yyyy ou yyyy-MM-dd')
+  .argument('[busca]', 'texto da busca')
   .action(actions.calculate.day);
 
 command_calculate.command('mes')
   .description('Horas do mês atual')
-  .action(() => actions.calculate.month(0))
+  .argument('[busca]', 'texto da busca')
+  .action((search) => actions.calculate.month(search, 0))
 
   .addCommand(createCommand('atual')
     .description('Horas do mês atual')
-    .action(() => actions.calculate.month(0)))
+    .argument('[busca]', 'texto da busca')
+    .action((search) => actions.calculate.month(search, 0)))
 
   .addCommand(createCommand('passado')
     .description('Horas do mês passado (mês atual -1)')
-    .action(() => actions.calculate.month(-1)))
+    .argument('[busca]', 'texto da busca')
+    .action((search) => actions.calculate.month(search, -1)))
 
   .addCommand(createCommand('retrasado')
     .description('Horas do mês retrasado (mês atual -2)')
-    .action(() => actions.calculate.month(-2)))
+    .argument('[busca]', 'texto da busca')
+    .action((search) => actions.calculate.month(search, -2)));
+
+program.command('atualizar')
+  .description('Buscar por novas atualizações')
+  .action(actions.manage.update);
 
 /** Runtime Execution */
 program.exitOverride();

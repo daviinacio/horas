@@ -1,5 +1,5 @@
-import { utils } from "../utils";
-import { createTimesheetByDate } from "../lib/timesheet";
+import { utils } from "../utils.js";
+import { createTimesheetByDate } from "../lib/timesheet.js";
 
 export function today(){
   const today = new Date();

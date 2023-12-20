@@ -1,7 +1,7 @@
-import { config } from "../config";
-import { getMonthFolderName } from "../constants";
-import { MonthNumber } from "../types";
-import { utils } from "../utils";
+import { config } from "../config.js";
+import { getMonthFolderName } from "../constants.js";
+import { MonthNumber } from "../types.js";
+import { utils } from "../utils.js";
 
 export function getTimesheetMonthPathByDate(date: Date){
   return `${

@@ -20,7 +20,9 @@ Calcula time sheets
 - [ ] Calcular mes retrasado
 
 
-
+# Funcionalidades extras
+- [x] Atualizar (git)
+- [ ] 
 
 
 ## Ideias

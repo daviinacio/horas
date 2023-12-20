@@ -17,3 +17,4 @@
 
 ## [0.6] 2023-12-
 - Full refactor to NodeJS (multi-platform)
+- Commando to update

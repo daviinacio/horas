@@ -1,5 +1,8 @@
 import fs from 'fs';
-import { config } from './config';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import { config } from './config.js';
+import { execSync } from 'child_process';
 
 function getSharedUserDataFolder(): string{
   return process.env.APPDATA || (
@@ -9,8 +12,14 @@ function getSharedUserDataFolder(): string{
     );
 }
 
-function getUserHomeFolder(): string{
+function getUserHomeFolder(): string {
   return process.env.HOME || process.env.USERPROFILE || '~/';
+}
+
+function getProgramFolder(): string {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+  return __dirname;
 }
 
 function dateformat(date: Date, format?: string){
@@ -53,15 +62,8 @@ function mkdirRecursive(file_path: string){
   fs.mkdirSync(file_path, { recursive: true });
 }
 
-function run(fn: Function){
-  try {
-    return fn();
-  }
-  catch(err){
-    if(err instanceof Error){
-      console.error(err.message);
-    }
-  }
+function bashExec(command: string){
+  execSync(command);
 }
 
 export const utils = {
@@ -74,6 +76,9 @@ export const utils = {
     },
     get user_home() {
       return getUserHomeFolder();
+    },
+    get program() {
+      return getProgramFolder();
     }
   },
   format: {
@@ -86,5 +91,7 @@ export const utils = {
     exists: pathExists,
     mkdirRecursive
   },
-  run
+  bash: {
+    exec: bashExec
+  }
 }

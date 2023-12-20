@@ -1,5 +1,5 @@
-import { config } from "./config"
-import type { Locales, MonthNumber } from "./types"
+import { config } from "./config.js"
+import type { Locales, MonthNumber } from "./types.js"
 
 type MonthFolderType = {
   [key in Locales]: {

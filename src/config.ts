@@ -1,5 +1,5 @@
-import { utils } from "./utils";
-import type { ConfigEntries } from './types';
+import { utils } from "./utils.js";
+import type { ConfigEntries } from './types.js';
 
 const config_file_path = `${utils.path.user_data}/config.json`;
 
