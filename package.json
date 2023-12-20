@@ -1,6 +1,6 @@
 {
   "name": "horas",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "A simple CLI app to manage local daily tasks notation files.",
   "main": "src/main.ts",
   "bin": {
@@ -24,7 +24,6 @@
     "build": "tsc",
     "unlink-cli": "yarn --global unlink horas",
     "link-cli": "(yarn unlink-cli || true) && chmod +x bin/main.js && yarn --global link",
-    "postinstall": "yarn build",
     "prepublish": "yarn build",
     "publish": "npm publish"
   },
