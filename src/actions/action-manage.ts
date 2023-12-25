@@ -26,7 +26,7 @@ export function update(){
   else {
     console.log('Buscando atualizações');
     utils.bash.exec(`
-      npm i -g horas
+      npm up -g horas
     `);
   }
 
