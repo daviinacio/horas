@@ -1,4 +1,5 @@
 import * as utils from '../utils/index.js';
+import * as constants from '../constants.js';
 
 export function update(){
   const program_folder = utils.path.program;
@@ -26,8 +27,10 @@ export function update(){
   else {
     console.log('Buscando atualizações');
     utils.bash.exec(`
-      npm up -g horas
+      npm up -g ${constants.app.name}
     `);
+
+    console.log('Atualizado com sucesso');
   }
 
   /** 

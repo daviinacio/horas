@@ -26,6 +26,22 @@ Calcula time sheets
 
 
 ## Ideias
+Funcionar similar ao git.
+Rodar de acordo com a pasta atual.
+Guardar preferencias em pasta .horas
+
+Commando `horas init`
+  - Criar pasta .horas, config.json, e pasta Template
+
+  **Vantagens**
+  - Remove a necessidade de configurações globais;
+  - Pode funcionar em mais de um contexto.
+
+  **Desvantagens**
+  - Necessidade de navegar até pasta para utilização.
+    - (Contorno): Configurar um contexto padrão.
+
+
 horas config dateformat
 horas criar template
 horas usar template "nome template"

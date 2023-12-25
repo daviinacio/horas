@@ -7,6 +7,7 @@ export type ConfigEntries = {
   timesheet_folder: string,
   timesheet_file_prefix: string,
   timesheet_file_dateformat: string,
+  timesheet_filename: string,
   backup_folder: string,
   template_folder: string,
   template_filename: string,

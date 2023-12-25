@@ -9,6 +9,7 @@ config.setDefault('dateformat', 'dd/MM/yyyy');
 config.setDefault('timesheet_folder', '$/Documents/Horas');
 config.setDefault('timesheet_file_dateformat', 'yyyy.MM.dd');
 config.setDefault('timesheet_file_prefix', 'Horario_');
+config.setDefault('timesheet_filename', 'Horario_yyyy.MM.dd');
 config.setDefault('template_folder', `${config.get('timesheet_folder')}/Templates`);
 config.setDefault('template_filename', 'DefaultTemplate.md');
 config.setDefault('backup_folder', `${config.get('timesheet_folder')}/.backup`);
