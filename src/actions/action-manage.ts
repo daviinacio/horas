@@ -1,4 +1,4 @@
-import { utils } from "../utils.js";
+import * as utils from '../utils/index.js';
 
 export function update(){
   const program_folder = utils.path.program;

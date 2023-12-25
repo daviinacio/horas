@@ -1,5 +1,5 @@
-import { utils } from "./utils.js";
 import type { ConfigEntries } from './types.js';
+import * as utils from './utils/index.js';
 
 const config_file_path = `${utils.path.user_data}/config.json`;
 
@@ -12,7 +12,7 @@ type ConfigType<Entries> = {
 }
 
 function ConfigLib<Entries>() : ConfigType<Entries> {
-  utils.io.mkdirRecursive(utils.path.user_data);
+  utils.io.mkdir(utils.path.user_data);
 
   const data = JSON.parse(utils.io.readFile(config_file_path, '{}'));
   const defaultData = {} as any;

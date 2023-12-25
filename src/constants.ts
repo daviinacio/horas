@@ -1,6 +1,10 @@
 import { config } from "./config.js"
 import type { Locales, MonthNumber } from "./types.js"
 
+export const app = {
+  name: 'horas'
+}
+
 type MonthFolderType = {
   [key in Locales]: {
     [key in MonthNumber]: string

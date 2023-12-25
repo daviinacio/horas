@@ -1,4 +1,4 @@
-import { utils } from "../utils.js";
+import * as utils from '../utils/index.js';
 
 export function today(search?: string){
   console.log('calculate today', search);
@@ -9,9 +9,7 @@ export function yesterday(search?: string){
 }
 
 export function day(dateText: string, search?: string){
-  const day = utils.format.dateTimezone(
-    new Date(`${dateText}`)
-  );
+  const day = utils.date.parse(dateText);
 
   if(Number.isNaN(day.getTime())){
     throw new Error('Data informada é inválida.');

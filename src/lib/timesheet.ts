@@ -1,7 +1,7 @@
 import { config } from "../config.js";
 import { getMonthFolderName } from "../constants.js";
 import { MonthNumber } from "../types.js";
-import { utils } from "../utils.js";
+import * as utils from '../utils/index.js';
 
 export function getTimesheetMonthPathByDate(date: Date){
   return `${
@@ -14,7 +14,7 @@ export function getTimesheetMonthPathByDate(date: Date){
 }
 
 export function getTimesheetFilenameByDate(date: Date){
-  const formattedDate = utils.format.dateformat(date, config.get('timesheet_file_dateformat'));
+  const formattedDate = utils.date.format(date, config.get('timesheet_file_dateformat'));
   return config.get('timesheet_file_prefix') + formattedDate + '.md';
 }
 
@@ -33,15 +33,15 @@ export function createTimesheetByDate(date: Date){
 
   if(utils.io.exists(timesheet_filepath)) {
     throw new Error(`Controle de horas ja criado para ${
-      utils.format.dateformat(date)
+      utils.date.format(date)
     }`);
   }
 
   const templateData = utils.io.readFile(template_filepath);
-  utils.io.mkdirRecursive(folder_name);
+  utils.io.mkdir(folder_name);
   utils.io.writeFile(timesheet_filepath, templateData);
 
   console.log(`Controle de horas criado com sucesso para o dia ${
-    utils.format.dateformat(date)
+    utils.date.format(date)
   }`);
 }

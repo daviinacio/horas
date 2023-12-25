@@ -52,6 +52,10 @@ command_create.command('dia')
   .argument('<data>', 'formato MM/dd/yyyy ou yyyy-MM-dd')
   .action(actions.create.day);
 
+command_create.command('semana')
+  .description('Criar controle para todos os dias da semana')
+  .action(actions.create.week);
+
 
 const command_calculate = program.command('calcular')
   .description('Comando de calculo de horas')
