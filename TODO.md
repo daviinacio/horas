@@ -12,17 +12,18 @@ Automatiza a criação de time sheet a partir de um template.
 **calcular**
 Calcula time sheets
 
-- [ ] Calcular hoje
-- [ ] Calcular ontem
-- [ ] Calcular um dia específico
+- [x] Calcular hoje
+- [x] Calcular ontem
+- [x] Calcular um dia específico
 - [ ] Calcular mes atual
 - [ ] Calcular mes passado
 - [ ] Calcular mes retrasado
+- [ ] Calcular com busca
 
 
 # Funcionalidades extras
 - [x] Atualizar (git)
-- [ ] 
+- [x] Criar Semana
 
 
 ## Ideias
@@ -41,6 +42,7 @@ Commando `horas init`
   - Necessidade de navegar até pasta para utilização.
     - (Contorno): Configurar um contexto padrão.
 
+medir performance do calculo
 
 horas config dateformat
 horas criar template

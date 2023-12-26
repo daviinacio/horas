@@ -60,3 +60,8 @@ export function daysFromWeek(date: Date, includeWeekend = false): Array<Date> {
 
   return week;
 }
+
+export function daysFromMonth(date: Date, includeWeekend = false): Array<Date> {
+  // TODO: Implement this method
+  return new Array<Date>();
+}
