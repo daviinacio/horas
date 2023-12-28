@@ -3,6 +3,7 @@
 /bin
 *.log
 package-lock.json
+*.swp
 
 # Logs
 logs

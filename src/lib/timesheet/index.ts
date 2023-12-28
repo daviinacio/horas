@@ -78,7 +78,7 @@ export function printWeekCalcResult(dateList: Array<Date>, result: ListCalcResul
   const balance = result.required.subtract(result.registered);
 
   console.log(
-    `\nTotal de horas registradas na semana ${
+    `Total de horas registradas na semana ${
       utils.date.format(dateList[0], 'dd/MM')
     } - ${
       utils.date.format(dateList[dateList.length -1], 'dd/MM')
@@ -91,7 +91,7 @@ export function printMonthResult(month: Date, result: ListCalcResult){
   const balance = result.required.subtract(result.registered);
 
   console.log(
-    `\nTotal de horas registradas no mês ${utils.date.format(month, 'MMMM/yyyy')}: ` +
+    `Total de horas registradas no mês ${utils.date.format(month, 'MMMM/yyyy')}: ` +
     `${result.registered} / ${result.required} (${balance})` 
   );
 }
@@ -133,17 +133,17 @@ export function dayCalc(date: Date): DayCalcResult {
   }
 
   result.isRegistered = registeredMark.split(',')
-    .some(mark => result.props.includes(mark));
+    .some(mark => result.props.some(prop => prop.includes(mark)));
 
   result.isDayOff = dayOffMarks.split(',')
-    .some(mark => result.props.includes(mark));
+    .some(mark => result.props.some(prop => prop.includes(mark)));
 
   return result;
 }
 
 export function printDayCalcResult(date: Date, result: DayCalcResult){
   console.log(
-    `Total de horas do dia ${utils.date.format(date)} ` +
+    `Total de horas do dia ${utils.date.format(date)}: ` +
     `${result.registeredTime} ` +
     `[${result.tasks.filter(t => t.checked).length}/${result.tasks.length}] ` +
     ((result.props.length > 0) ? ('- ' + result.props.join(' - ')) : '') +
@@ -152,6 +152,9 @@ export function printDayCalcResult(date: Date, result: DayCalcResult){
 }
 
 function lineCalc(line: string, result: DayCalcResult): void {
+  // Sanitize line
+  line = line.replaceAll('\r', '');
+
   // File properties
   if(line.substring(0, 6) === '- [x] '){
     const name = line.substring(6).trim();
