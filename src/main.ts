@@ -149,6 +149,16 @@ program.command('atualizar')
   .description('Buscar por novas atualizações')
   .action(actions.manage.update);
 
+program.command('config')
+  .description('Ler ou alterar uma configuração')
+  .argument('[key]', 'Nome do valor a ser configurado')
+  .argument('[value]', 'Valor a ser armazenado')
+  .option('-g, --global', 'Define a configuração globalmente')
+  .option('-u, --unset <string>', 'Restaura valor padrão')
+  .option('-l, --list-all', 'Lista todas as configurações armazenadas')
+  .option('--get <string>', 'Ler o valor de uma configuração')
+  .action(actions.manage.configure);
+
 /** Runtime Execution */
 program.exitOverride();
 

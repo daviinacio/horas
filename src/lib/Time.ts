@@ -21,7 +21,7 @@ export default class Time {
     return new Time(
       Math.abs(this.#minutes - time.#minutes),
       occultMinutesWhenZero,
-      this.#minutes < time.#minutes ? '+' : '-'
+      this.#minutes <= time.#minutes ? '+' : '-'
     )
   }
 
