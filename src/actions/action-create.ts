@@ -26,8 +26,10 @@ export function day(dateText: string){
   timesheet.create(day);
 }
 
-export function week(){
-  const week = utils.date.daysFromWeek(new Date());
+export function week(weekShift = 0){
+  const week = utils.date.daysFromWeek(
+    utils.date.addDays(new Date(), weekShift * 7)
+  );
 
   const results = week.map((day) => {
     try {
@@ -41,4 +43,22 @@ export function week(){
 
   if(!results.some(v => v))
     throw new Error('Controle de horas já criado para essa semana');
+}
+
+export function month(monthShift = 0){
+  const month = utils.date.addMonth(new Date(), monthShift);
+  const monthDays = utils.date.daysFromMonth(month);
+
+  const results = monthDays.map((day) => {
+    try {
+      timesheet.create(day);
+      return true
+    }
+    catch(err) {
+      return false;
+    }
+  });
+
+  if(!results.some(v => v))
+    throw new Error('Controle de horas já criado para esse mês');
 }

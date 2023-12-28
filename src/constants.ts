@@ -42,6 +42,11 @@ export const month_folder_name: MonthFolderType = {
   }
 }
 
+export function getMonthFolderName(month: MonthNumber){
+  const currentLocale = config.get('locale') as Locales;
+  return month_folder_name[currentLocale][month];
+}
+
 export const month_name: MonthFolderType = {
   'pt-BR': {
     1: "Janeiro",
@@ -73,7 +78,7 @@ export const month_name: MonthFolderType = {
   }
 }
 
-export function getMonthFolderName(month: MonthNumber){
+export function getMonthName(month: MonthNumber){
   const currentLocale = config.get('locale') as Locales;
-  return month_folder_name[currentLocale][month];
+  return month_name[currentLocale][month];
 }

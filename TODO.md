@@ -15,16 +15,26 @@ Calcula time sheets
 - [x] Calcular hoje
 - [x] Calcular ontem
 - [x] Calcular um dia específico
-- [ ] Calcular mes atual
-- [ ] Calcular mes passado
-- [ ] Calcular mes retrasado
+- [x] Calcular mes atual
+- [x] Calcular mes passado
+- [x] Calcular mes retrasado
 - [ ] Calcular com busca
 
 
 # Funcionalidades extras
 - [x] Atualizar (git)
-- [x] Criar Semana
-
+- [x] Criar semana
+  - [x] Atual
+  - [x] Passada
+  - [x] Retrasada
+- [x] Criar mês
+  - [x] Atual
+  - [x] Passado
+  - [x] Retrasado
+- [x] Calcular semana
+  - [x] Atual
+  - [x] Passada
+  - [x] Retrasada
 
 ## Ideias
 Funcionar similar ao git.

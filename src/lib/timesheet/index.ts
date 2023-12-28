@@ -1,5 +1,6 @@
 import * as common from './common.js';
 import * as utils from '../../utils/index.js';
+import Time from '../Time.js';
 
 export function create(date: Date){
   const month_path = common.getMonthPathByDate(date);
@@ -32,8 +33,67 @@ function cloneTemplate(template_path: string, timesheet_path: string){
 const dayOffMarks = 'Feriado, Facultativo, Fim de semana, Folga';
 const registeredMark = 'Anotado';
 
-export function monthCalc(date:Date){
-  // TODO: Implement this method
+type ListCalcResult = {
+  itemsFound: number
+  registered: Time
+  required: Time
+  // isRegistered: boolean
+  // isDayOff: boolean
+  // partialTime: Time
+  // registeredTime: Time
+  // tasks: Task[]
+  // props: string[]
+}
+
+export function listCalc(dateList: Array<Date>): ListCalcResult {
+  const result: ListCalcResult = {
+    itemsFound: 0,
+    registered: new Time(),
+    required: new Time(0, false, '')
+  }
+  
+
+  for(let date of dateList) {
+    try {
+      const dayCalcResult = dayCalc(date);
+
+      if(!dayCalcResult.isDayOff)
+        result.required.addHours(8);
+
+      if(dayCalcResult.isRegistered)
+        result.registered.addTime(dayCalcResult.registeredTime);
+      else
+        result.registered.addTime(dayCalcResult.partialTime);
+    
+      printDayCalcResult(date, dayCalcResult);
+      result.itemsFound++;
+    }
+    catch(err) {}
+  }
+
+  return result;
+}
+
+export function printWeekCalcResult(dateList: Array<Date>, result: ListCalcResult){
+  const balance = result.required.subtract(result.registered);
+
+  console.log(
+    `\nTotal de horas registradas na semana ${
+      utils.date.format(dateList[0], 'dd/MM')
+    } - ${
+      utils.date.format(dateList[dateList.length -1], 'dd/MM')
+    }: ` +
+    `${result.registered} / ${result.required} (${balance})` 
+  );
+}
+
+export function printMonthResult(month: Date, result: ListCalcResult){
+  const balance = result.required.subtract(result.registered);
+
+  console.log(
+    `\nTotal de horas registradas no mês ${utils.date.format(month, 'MMMM/yyyy')}: ` +
+    `${result.registered} / ${result.required} (${balance})` 
+  );
 }
 
 type Task = {
@@ -60,7 +120,7 @@ export function dayCalc(date: Date): DayCalcResult {
   const result: DayCalcResult = {
     isRegistered: false,
     isDayOff: false,
-    partialTime: new Time(0),
+    partialTime: new Time(0, false, ''),
     registeredTime: new Time(0),
     tasks: [],
     props: []
@@ -82,12 +142,12 @@ export function dayCalc(date: Date): DayCalcResult {
 }
 
 export function printDayCalcResult(date: Date, result: DayCalcResult){
-  //console.log(common.getTimesheetFilenameByDate(date), result);
   console.log(
     `Total de horas do dia ${utils.date.format(date)} ` +
     `${result.registeredTime} ` +
     `[${result.tasks.filter(t => t.checked).length}/${result.tasks.length}] ` +
-    result.props.join(' - ')
+    ((result.props.length > 0) ? ('- ' + result.props.join(' - ')) : '') +
+    (!result.isRegistered && !result.partialTime.empty() ? `[@${result.partialTime}]` : '')
   )
 }
 
@@ -133,29 +193,5 @@ function lineCalc(line: string, result: DayCalcResult): void {
 
     if(line.charAt(10) === '@')
       result.partialTime.addMinutes(15);
-  }
-}
-
-class Time {
-  #minutes: number = 0;
-
-  constructor(initialMinutes = 0){
-    this.#minutes = initialMinutes;
-  }
-
-  addMinutes(minutes: number){
-    this.#minutes += minutes;
-  }
-
-  get minutes(){
-    return this.#minutes % 60;
-  }
-
-  get hours(){
-    return Math.floor(this.#minutes / 60);
-  }
-
-  toString(){
-    return String(this.hours).padStart(2, '0') + 'h' + String(this.minutes).padStart(2, '0');
   }
 }

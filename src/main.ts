@@ -54,9 +54,36 @@ command_create.command('dia')
   .action(actions.create.day);
 
 command_create.command('semana')
-  .description('Criar controle para todos os dias da semana')
-  .action(actions.create.week);
+  .description('Criar controle para todos os dias úteis da semana')
+  .action(() => actions.create.week(0))
 
+  .addCommand(createCommand('atual')
+    .description('Criar controle para todos os dias úteis da semana atual')
+    .action(() => actions.create.week(0)))
+
+  .addCommand(createCommand('passada')
+    .description('Criar controle para todos os dias úteis da semana passada (semana atual -1)')
+    .action(() => actions.create.week(-1)))
+
+  .addCommand(createCommand('retrasada')
+    .description('Criar controle para todos os dias úteis da semana retrasada (semana atual -2)')
+    .action(() => actions.create.week(-2)));
+
+command_create.command('mes')
+  .description('Criar controle para todos os dias úteis do mês')
+  .action(() => actions.create.month(0))
+
+  .addCommand(createCommand('atual')
+    .description('Criar controle para todos os dias úteis do mês atual')
+    .action(() => actions.create.month(0)))
+
+  .addCommand(createCommand('passado')
+    .description('Criar controle para todos os dias úteis do mês passado (mês atual -1)')
+    .action(() => actions.create.month(-1)))
+
+  .addCommand(createCommand('retrasado')
+    .description('Criar controle para todos os dias úteis do mês retrasado (mês atual -2)')
+    .action(() => actions.create.month(-2)));
 
 const command_calculate = program.command('calcular')
   .description('Comando de calculo de horas')
@@ -77,6 +104,26 @@ command_calculate.command('dia')
   .argument('<data>', 'formato MM/dd/yyyy ou yyyy-MM-dd')
   .argument('[busca]', 'texto da busca')
   .action(actions.calculate.day);
+
+command_calculate.command('semana')
+  .description('Horas da semana')
+  .argument('[busca]', 'texto da busca')
+  .action((search) => actions.calculate.week(search, 0))
+
+  .addCommand(createCommand('atual')
+    .description('Horas da semana atual')
+    .argument('[busca]', 'texto da busca')
+    .action((search) => actions.calculate.week(search, 0)))
+
+  .addCommand(createCommand('passada')
+    .description('Horas da semana passada (semana atual -1)')
+    .argument('[busca]', 'texto da busca')
+    .action((search) => actions.calculate.week(search, -1)))
+
+  .addCommand(createCommand('retrasada')
+    .description('Horas da semana retrasada (semana atual -2)')
+    .argument('[busca]', 'texto da busca')
+    .action((search) => actions.calculate.week(search, -2)));
 
 command_calculate.command('mes')
   .description('Horas do mês atual')
