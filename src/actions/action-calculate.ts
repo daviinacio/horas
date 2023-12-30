@@ -4,14 +4,26 @@ import Time from '../lib/Time.js';
 
 export function today(search?: string){
   const today = new Date();
-  const result = timesheet.dayCalc(today);
-  timesheet.printDayCalcResult(today, result);
+  const result = timesheet.dayCalc(today, search);
+
+  if(search) {
+    timesheet.printSearchResult(result.registeredTime);
+  }
+  else {
+    timesheet.printDayCalcResult(today, result);
+  }
 }
 
 export function yesterday(search?: string){
   const yesterday = utils.date.addDays(new Date(), -1);
-  const result = timesheet.dayCalc(yesterday);
-  timesheet.printDayCalcResult(yesterday, result);
+  const result = timesheet.dayCalc(yesterday, search);
+  
+  if(search) {
+    timesheet.printSearchResult(result.registeredTime);
+  }
+  else {
+    timesheet.printDayCalcResult(yesterday, result);
+  }
 }
 
 export function day(dateText: string, search?: string){
@@ -21,8 +33,14 @@ export function day(dateText: string, search?: string){
     throw new Error('Data informada é inválida.');
   }
 
-  const result = timesheet.dayCalc(day);
-  timesheet.printDayCalcResult(day, result);
+  const result = timesheet.dayCalc(day, search);
+  
+  if(search) {
+    timesheet.printSearchResult(result.registeredTime);
+  }
+  else {
+    timesheet.printDayCalcResult(day, result);
+  }
 }
 
 export function week(search?: string, weekShift = 0){
@@ -36,7 +54,7 @@ export function week(search?: string, weekShift = 0){
     utils.date.format(week[week.length -1], 'dd/MM/yyyy')
   }`);
 
-  const result = timesheet.listCalc(week);
+  const result = timesheet.listCalc(week, search);
 
   if(result.registered.equals(new Time()))
     throw new Error('As horas dessa semana ainda não foram lançadas no DevOps');
@@ -44,7 +62,12 @@ export function week(search?: string, weekShift = 0){
   if(result.itemsFound === 0)
     throw new Error('Não existe controle de horas para essa semana');
   
-  timesheet.printWeekCalcResult(week, result);
+  if(search) {
+    timesheet.printSearchResult(result.registered);
+  }
+  else {
+    timesheet.printWeekCalcResult(week, result);
+  }
 }
 
 export function month(search?: string, monthShift = 0){
@@ -53,15 +76,20 @@ export function month(search?: string, monthShift = 0){
 
   console.log(`Mês: ${utils.date.format(month, 'MMMM/yyyy')}`);
 
-  const result = timesheet.listCalc(monthDays);
+  const result = timesheet.listCalc(monthDays, search);
 
-  if(result.registered.empty())
+  if(result.registered.isEmpty())
     throw new Error('As horas desse mês ainda não foram lançadas no DevOps');
 
   if(result.itemsFound === 0)
     throw new Error('Não existe controle de horas para esse mês');
-
-  timesheet.printMonthResult(month, result);
+  
+  if(search) {
+    timesheet.printSearchResult(result.registered);
+  }
+  else {
+    timesheet.printMonthResult(month, result);
+  }
 
   // const date = new Date();
   // date.setDate(1);

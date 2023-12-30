@@ -9,7 +9,7 @@ export default class Time {
     this.#sign = sign;
   }
 
-  empty(){
+  isEmpty(){
     return this.#minutes === 0;
   }
 

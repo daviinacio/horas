@@ -18,7 +18,7 @@ Calcula time sheets
 - [x] Calcular mes atual
 - [x] Calcular mes passado
 - [x] Calcular mes retrasado
-- [ ] Calcular com busca
+- [x] Calcular com busca
 
 
 # Funcionalidades extras

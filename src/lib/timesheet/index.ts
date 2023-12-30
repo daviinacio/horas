@@ -45,7 +45,7 @@ type ListCalcResult = {
   // props: string[]
 }
 
-export function listCalc(dateList: Array<Date>): ListCalcResult {
+export function listCalc(dateList: Array<Date>, search?: string): ListCalcResult {
   const result: ListCalcResult = {
     itemsFound: 0,
     registered: new Time(),
@@ -55,7 +55,7 @@ export function listCalc(dateList: Array<Date>): ListCalcResult {
 
   for(let date of dateList) {
     try {
-      const dayCalcResult = dayCalc(date);
+      const dayCalcResult = dayCalc(date, search);
 
       if(!dayCalcResult.isDayOff)
         result.required.addHours(8);
@@ -110,7 +110,7 @@ type DayCalcResult = {
   props: string[]
 }
 
-export function dayCalc(date: Date): DayCalcResult {
+export function dayCalc(date: Date, search?: string): DayCalcResult {
   const timesheet_path = common.getTimesheetFilePathByDate(date);
 
   if(!utils.io.exists(timesheet_path)){
@@ -129,7 +129,7 @@ export function dayCalc(date: Date): DayCalcResult {
   const timesheetContent = utils.io.readFile(timesheet_path);
 
   for(let line of timesheetContent.split('\n')){
-    lineCalc(line, result);
+    lineCalc(line, result, search);
   }
 
   result.isRegistered = registeredMark.split(',')
@@ -147,11 +147,18 @@ export function printDayCalcResult(date: Date, result: DayCalcResult){
     `${result.registeredTime} ` +
     `[${result.tasks.filter(t => t.checked).length}/${result.tasks.length}] ` +
     ((result.props.length > 0) ? ('- ' + result.props.join(' - ')) : '') +
-    (!result.isRegistered && !result.partialTime.empty() ? `[@${result.partialTime}]` : '')
+    (!result.isRegistered && !result.partialTime.isEmpty() ? `[@${result.partialTime}]` : '')
   )
 }
 
-function lineCalc(line: string, result: DayCalcResult): void {
+export function printSearchResult(result: Time){
+  if(result.isEmpty())
+    throw new Error('Nenhum registro encontrado durante a busca');
+
+  console.log(`Total de hora acumulada na busca: ${result}`)
+}
+
+function lineCalc(line: string, result: DayCalcResult, search?: string): void {
   // Sanitize line
   line = line.replaceAll('\r', '');
 
@@ -175,6 +182,9 @@ function lineCalc(line: string, result: DayCalcResult): void {
       name, checked
     })
   }
+
+  // Search
+  if(search && line.indexOf(search) === -1) return;
 
   // 30 minutes
   if(line.charAt(2) === ':'){

@@ -2,6 +2,7 @@
 import { Command, CommanderError, createCommand } from "commander";
 import { config } from "./config.js";
 import * as actions from "./actions/index.js";
+import * as utils from './utils/index.js';
 
 /** Default configuration */
 config.setDefault('locale', 'pt-BR');
@@ -19,7 +20,7 @@ const program = new Command();
 program
   .name('task-time-manager')
   .description('A simple CLI app to manage local daily tasks notation files.')
-  .version('0.6.0 node');
+  .version(`${utils.pkg.version} node`);
 
 program.hook('preAction', (thisCommand, actionCommand) => {
   
