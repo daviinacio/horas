@@ -1,6 +1,6 @@
 {
   "name": "horas",
-  "version": "0.6.5",
+  "version": "0.6.6",
   "description": "A simple CLI app to manage local daily tasks notation files.",
   "main": "src/main.ts",
   "bin": {

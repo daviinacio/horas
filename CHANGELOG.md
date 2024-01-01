@@ -15,6 +15,9 @@
   - Brings DefaultTemplate by default
   - You can create new templates
 
-## [0.6] 2023-12-
+## [0.6] 2023-12-29
 - Full refactor to NodeJS (multi-platform)
-- Commando to update
+- Update command
+- Calculate week
+- Calculate month
+- Create week
